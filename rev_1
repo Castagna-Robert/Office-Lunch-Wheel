@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define total 5		// total # of restaurants
+
+int main(void) {
+
+//var
+double increase = 0.25 ; // percent increase for choice
+int r ;
+int in_1 , in_2, in_3, in_4, in_5 ;  
+int *ptra , *ptrb, *ptrc, *ptrd, *ptre;
+int resA = 1, resB = 2, resC = 3, resD = 4, resE = 5 ;
+ptra = &resA ;
+ptrb = &resB ;
+ptrc = &resC ;
+ptrd = &resD ;
+ptre = &resE ;
+// for input array
+int userNum ;		
+
+// initial size limit for rand() selector function "size of piece of pie"
+int Ua = 100 / total ; 
+int Ub = 100 / total ; 
+int Uc = 100 / total ;
+int Ud = 100 / total ;
+int Ue = 100 / total ; 
+
+printf("How many people are playing today ?\n");
+scanf("%d", &userNum) ;
+int count[userNum] ;
+int inputData[userNum] ;
+
+//clear count array
+for (int x = 0; x < total; ++x) {
+	count[x]= 0 ;
+}
+
+//UI stuff 
+printf(" %d = Restaurant 1 \n %d = Restaurant 2 \n %d = Restaurant 3 \n %d = Restaurant 4 \n %d = Restaurant 5 \n \n", resA , resB, resC, resD, resE); 
+printf("Please Enter number of Preferred Restaurant. (selecting favourite increases odds by %f percent) \n \n",increase*100 );
+
+for (int i = 0 ; i < userNum ; ++i) {
+	printf("User %d: ", i + 1) ; 
+	scanf(" %d", &inputData[i]) ; 
+}
+
+/* prints input data 
+for (int z = 0; z < userNum; ++z) {
+	printf("%d\n", inputData[z]);
+}
+*/ 
+
+for (int k = 0; k < userNum ; ++k) {
+	for (int n = 1; n < total + 1; ++n) {
+		if (inputData[k] == n) {
+		count[n - 1] += 1 ;
+		}
+	}
+}
+
+in_1 = count[0] ;
+in_2 = count[1] ;
+in_3 = count[2] ;
+in_4 = count[3] ;
+in_5 = count[4] ;
+
+ /*checking count matrix
+printf("number of times 1 was entered: %d\n", in_1 ) ;
+printf("number of times 2 was entered: %d\n", in_2 ) ;
+printf("number of times 3 was entered: %d\n", in_3 ) ;
+printf("number of times 4 was entered: %d\n", in_4 ) ;
+printf("number of times 5 was entered: %d\n", in_5 ) ;
+*/
+
+Ua = Ua + in_1 * Ua * increase ; 	// weightings of restaurants based on entries 
+Ub = Ub + in_2 * Ub * increase ;
+Uc = Uc + in_3 * Uc * increase ;
+Ud = Ud + in_4 * Ud * increase ;
+Ue = Ue + in_5 * Ue * increase ;
+ 
+ /* check Ua balancing is correct
+printf(" Ua value is now : %d \n", Ua) ;   
+printf(" Ub value is now : %d \n", Ub) ;
+printf(" Uc value is now : %d \n", Uc) ;
+printf(" Ud value is now : %d \n", Ud) ;
+printf(" Ue value is now : %d \n", Ue) ;
+*/
+
+// random number generator
+int newTot = Ua + Ub + Uc + Ud + Ue ;
+srand(time(NULL));
+r = rand() % newTot ; 		
+printf("\n landed on ... \n \n") ; 
+
+// condition to pick restauraunt
+if (r > -1 && r < Ua) {
+	printf("RED ! We are going to %d!\n", resA) ;
+} 
+
+if (r > Ua && r < (Ua + Ub)) { 
+	printf("ORANGE ! We are going to %d!\n", resB) ;
+} 
+
+if (r > (Ua + Ub) && r < (Ua + Ub + Uc)) {
+	printf("YELLOW ! We are going to %d!\n", resC) ;
+} 
+if (r > (Ua + Ub + Uc) && r < (newTot - Ue)) {
+	printf("GREEN ! We are going to %d!\n", resD) ;
+} 
+if (r > (newTot - Ue) && r < newTot) {
+	printf("BLUE ! We are going to %d!\n", resE) ;
+} 
+
+printf("\nEnjoy :)  \n\n\n\n\n ") ; 
+
+return 0 ; 
+}
